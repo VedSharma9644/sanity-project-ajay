@@ -1,33 +1,33 @@
 'use client'
 
+import { urlFor } from '@/lib/sanity.client'
+
 type TeamSectionProps = {
   label?: string
   title: string
-  highlightedText?: string
   description?: string
-  icon?: { asset: { url: string } }
-  mainImage?: { asset: { url: string } }
+  icon?: any
+  mainImage?: any
 }
 
 export default function TeamSection({ 
   label, 
   title, 
-  highlightedText, 
   description, 
   icon, 
   mainImage 
 }: TeamSectionProps) {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-6">
             {label && (
               <div className="flex items-center gap-2">
-                {icon?.asset?.url && (
+                {icon && (
                   <img 
-                    src={icon.asset.url} 
+                    src={urlFor(icon).url()} 
                     alt={label} 
                     className="w-6 h-6"
                   />
@@ -40,11 +40,6 @@ export default function TeamSection({
             
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               {title}
-              {highlightedText && (
-                <span className="text-blue-600 block">
-                  {highlightedText}
-                </span>
-              )}
             </h2>
             
             {description && (
@@ -55,10 +50,10 @@ export default function TeamSection({
           </div>
           
           {/* Right Image */}
-          {mainImage?.asset?.url && (
+          {mainImage && (
             <div className="relative">
               <img 
-                src={mainImage.asset.url} 
+                src={urlFor(mainImage).url()} 
                 alt={title}
                 className="w-full h-auto rounded-lg shadow-lg"
               />

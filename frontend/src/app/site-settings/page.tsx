@@ -1,7 +1,7 @@
-import { getSiteSettings } from "@/lib/siteSettings";
+import { getSiteSettingsNew, generateGradientClass } from "@/lib/siteSettingsNew";
 
 export default async function SiteSettingsPage() {
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettingsNew();
 
   return (
     <main className="min-h-screen p-8">
@@ -10,9 +10,9 @@ export default async function SiteSettingsPage() {
         
         {!settings ? (
           <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-            <h2 className="text-xl font-semibold text-red-800 mb-4">No Site Settings Found</h2>
+            <h2 className="text-xl font-semibold text-red-800 mb-4">No SEO Settings Found</h2>
             <p className="text-red-700 mb-4">
-              No site settings document exists in your Sanity database. Please create one in Sanity Studio.
+              No SEO settings document exists in your Sanity database. Please create one in Sanity Studio.
             </p>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-blue-800">
@@ -20,8 +20,8 @@ export default async function SiteSettingsPage() {
               </p>
               <ul className="text-blue-700 mt-2 space-y-1">
                 <li>• Go to Sanity Studio at <a href="http://localhost:3333" className="underline" target="_blank">http://localhost:3333</a></li>
-                <li>• Navigate to "Site Settings" in the sidebar</li>
-                <li>• Create a new Site Settings document</li>
+                <li>• Navigate to "SEO Settings" in the sidebar</li>
+                <li>• Create a new SEO Settings document</li>
                 <li>• Fill in the required fields</li>
                 <li>• Save and refresh this page</li>
               </ul>
@@ -30,9 +30,9 @@ export default async function SiteSettingsPage() {
         ) : (
           <div className="space-y-6">
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-green-800 mb-4">✅ Site Settings Found</h2>
+              <h2 className="text-xl font-semibold text-green-800 mb-4">✅ SEO Settings Found</h2>
               <p className="text-green-700">
-                Your site settings are configured and ready to use.
+                Your SEO settings are configured and ready to use.
               </p>
             </div>
             

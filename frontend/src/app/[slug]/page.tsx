@@ -1,27 +1,56 @@
 import { sanityClient } from '@/lib/sanity.client'
 import { notFound } from 'next/navigation'
-import { getPageQuery, renderSection } from '@/lib/pageUtils'
+import { getPageQuery, renderSectionsWithSideLineContext } from '@/lib/pageUtils'
+import BackgroundColorProvider from "@/components/BackgroundColorProvider";
+import FontColorProvider from "@/components/FontColorProvider";
+import { cleanColorValue } from '@/lib/colorUtils'
 
-export default async function DynamicPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function DynamicPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
+  
   try {
-    // Await params as required by Next.js 15
-    const { slug } = await params;
-    
     // Skip if this is the homepage slug (handled by root page.tsx)
     if (slug === 'homepage') {
       notFound();
     }
 
     const page = await sanityClient.fetch(getPageQuery(slug));
-
+    
     if (!page) {
-      notFound();
+      return (
+        <main className="min-h-screen" style={{ backgroundColor: 'white' }}>
+          <div className="max-w-4xl mx-auto py-12 px-4 text-center">
+            <h1 className="text-4xl font-bold mb-6">Page Not Found</h1>
+            <p className="text-xl text-gray-600 mb-8">
+              The page "{slug}" does not exist.
+            </p>
+            <div className="border border-blue-200 rounded-lg p-4">
+              <p className="text-blue-800">
+                <strong>Debug Info:</strong> Page "{slug}" not found. Visit <a href="/debug" className="underline">/debug</a> for more details.
+              </p>
+            </div>
+          </div>
+        </main>
+      );
     }
 
+    // Get and clean color values from page settings
+    const backgroundColor = cleanColorValue(page.pageSettings?.pageBackground) || 'white';
+    const headingFontColor = cleanColorValue(page.pageSettings?.headingFontColor);
+    const titleFontColor = cleanColorValue(page.pageSettings?.titleFontColor);
+    const contentFontColor = cleanColorValue(page.pageSettings?.contentFontColor);
+    
     return (
-      <main className="min-h-screen">
+      <>
+        <BackgroundColorProvider backgroundColor={backgroundColor} />
+        <FontColorProvider 
+          headingFontColor={headingFontColor}
+          titleFontColor={titleFontColor}
+          contentFontColor={contentFontColor}
+        />
+        <main className="min-h-screen" style={{ backgroundColor }}>
         {page.pageBuilder && page.pageBuilder.length > 0 ? (
-          page.pageBuilder.map(renderSection)
+                     renderSectionsWithSideLineContext(page.pageBuilder)
         ) : (
           <div className="max-w-4xl mx-auto py-12 px-4 text-center">
             <h1 className="text-4xl font-bold mb-6">{page.title}</h1>
@@ -41,18 +70,19 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
             </div>
           </div>
         )}
-      </main>
+        </main>
+      </>
     )
   } catch (error) {
     console.error('Error fetching page data:', error);
     return (
-      <main className="min-h-screen">
+      <main className="min-h-screen" style={{ backgroundColor: 'white' }}>
         <div className="max-w-4xl mx-auto py-12 px-4 text-center">
           <h1 className="text-4xl font-bold mb-6">Connection Error</h1>
           <p className="text-xl text-gray-600 mb-8">
             Unable to connect to Sanity CMS.
           </p>
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="border border-red-200 rounded-lg p-4">
             <p className="text-red-800">
               <strong>Error:</strong> {error instanceof Error ? error.message : 'Unknown error'}
             </p>

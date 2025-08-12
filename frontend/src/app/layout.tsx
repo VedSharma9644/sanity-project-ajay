@@ -5,6 +5,11 @@ import { sanityClient } from "@/lib/sanity.client";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { getSiteSettings } from "@/lib/siteSettings";
+import { getHeaderQuery } from "@/lib/headerQuery";
+import { VisualEditingWrapper } from '@/components/VisualEditingWrapper'
+import DebugWebSocket from '@/components/DebugWebSocket'
+import EnvTest from '@/components/EnvTest'
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: settings?.siteTitle,
       images: settings?.ogImage ? [
         {
-          url: `${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2021-06-01/production/${settings.ogImage.asset._ref}`,
+          url: `${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2025-08-03/production/${settings.ogImage.asset._ref}`,
           width: 1200,
           height: 630,
           alt: settings?.ogTitle || settings?.defaultMetaTitle,
@@ -45,7 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: settings?.ogDescription || settings?.defaultMetaDescription || settings?.siteDescription,
       site: settings?.twitterHandle,
       images: settings?.ogImage ? [
-        `${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2021-06-01/production/${settings.ogImage.asset._ref}`
+        `${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2025-08-03/production/${settings.ogImage.asset._ref}`
       ] : undefined,
     },
     robots: {
@@ -59,22 +64,23 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 async function getHeaderData() {
-  return await sanityClient.fetch(`*[_type == "siteHeader"][0]{
-    logo,
-    navLinks[]{
-      label,
-      url
-    },
-    mobileMenuIcon,
-    useCasesButtonLabel
-  }`)
+  return await sanityClient.fetch(getHeaderQuery)
 }
 
 async function getFooterData() {
   return await sanityClient.fetch(`*[_type == "siteFooter"][0]{
-    logo,
+    logo{
+      asset->{
+        url
+      }
+    },
     socialLinks[]{
       platform,
+      icon{
+        asset->{
+          url
+        }
+      },
       url
     },
     menuLinks[]{
@@ -112,8 +118,8 @@ export default async function RootLayout({
         <SiteHeader 
           logo={headerData?.logo}
           navLinks={headerData?.navLinks}
-          mobileMenuIcon={headerData?.mobileMenuIcon}
-          useCasesButtonLabel={headerData?.useCasesButtonLabel}
+          ctaButton={headerData?.ctaButton}
+          headerSettings={headerData?.headerSettings}
         />
         {children}
         <SiteFooter 
@@ -125,6 +131,11 @@ export default async function RootLayout({
           legalLinks={footerData?.legalLinks}
           copyright={footerData?.copyright}
         />
+        <VisualEditingWrapper />
+        {/* Debug components disabled - uncomment to re-enable
+        <DebugWebSocket />
+        <EnvTest />
+        */}
       </body>
     </html>
   );

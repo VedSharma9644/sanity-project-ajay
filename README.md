@@ -11,7 +11,7 @@ A modern, SEO-optimized website built with **Next.js 15**, **Sanity CMS**, and *
 - **Responsive Design** - Mobile-first approach
 
 ### 📝 **Content Management**
-- **Site Settings** - Centralized SEO and website configuration
+- **SEO Settings** - Centralized SEO and website configuration
 - **Blog System** - Full-featured blog with rich content
 - **Dynamic Pages** - Create unlimited pages with the page builder
 - **Media Management** - Optimized image handling with Sanity
@@ -140,10 +140,10 @@ npm run dev
 
 ## 📋 Initial Setup
 
-### **1. Configure Site Settings**
+### **1. Configure SEO Settings**
 1. Go to Sanity Studio (http://localhost:3333)
-2. Navigate to "Site Settings" in the sidebar
-3. Create a new Site Settings document
+2. Navigate to "SEO Settings" in the sidebar
+3. Create a new SEO Settings document
 4. Fill in essential fields:
    - **Site Title**: Your website name
    - **Site URL**: Your website URL
@@ -177,7 +177,7 @@ Follow the guide in `studio/DEMO-IMPORT-GUIDE.md` to import sample content.
 - Maintain consistent spacing
 
 ### **SEO Configuration**
-- Update Site Settings in Sanity Studio
+- Update SEO Settings in Sanity Studio
 - Configure Open Graph and Twitter Card images
 - Set up structured data for your organization
 - Add favicon and logo
@@ -204,8 +204,8 @@ Follow the guide in `studio/DEMO-IMPORT-GUIDE.md` to import sample content.
 - Featured images
 - Publication metadata
 
-### **Site Settings Debug** (`/site-settings`)
-- View all site settings
+### **SEO Settings Debug** (`/site-settings`)
+- View all SEO settings
 - Debug SEO configuration
 - Raw data display
 
@@ -238,7 +238,7 @@ NEXT_PUBLIC_SANITY_DATASET=production
 
 ### **Content Types**
 
-- **Site Settings** - Global SEO and website configuration
+- **SEO Settings** - Global SEO and website configuration
 - **Pages** - Dynamic pages with page builder
 - **Posts** - Blog posts with rich content
 - **Sections** - Reusable content sections
@@ -271,7 +271,7 @@ Ensure these are set in your hosting platform:
 - Ensure Sanity Studio is running
 
 **2. Missing Content**
-- Create Site Settings document
+- Create SEO Settings document
 - Add content in Sanity Studio
 - Check page slugs match URLs
 
@@ -282,7 +282,7 @@ Ensure these are set in your hosting platform:
 
 ### **Debug Pages**
 - `/debug` - General debug information
-- `/site-settings` - Site settings debug
+- `/site-settings` - SEO settings debug
 
 ## 📚 Resources
 

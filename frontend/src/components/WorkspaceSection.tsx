@@ -1,11 +1,13 @@
 'use client'
 
+import { urlFor } from '@/lib/sanity.client'
+
 type WorkspaceSectionProps = {
   badgeLabel: string
   title: string
-  icon: { asset: { url: string } }
+  icon: any
   description: string
-  image: { asset: { url: string } }
+  image: any
 }
 
 export default function WorkspaceSection({ 
@@ -33,7 +35,7 @@ export default function WorkspaceSection({
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Badge */}
         <div className="text-center mb-6">
@@ -47,7 +49,7 @@ export default function WorkspaceSection({
           {icon && (
             <div className="flex justify-center mb-6">
               <img
-                src={icon.asset.url}
+                src={urlFor(icon).url()}
                 alt="Workspace Icon"
                 className="h-16 w-16 object-contain"
               />
@@ -65,7 +67,7 @@ export default function WorkspaceSection({
         {image && (
           <div className="flex justify-center">
             <img
-              src={image.asset.url}
+              src={urlFor(image).url()}
               alt="Workspace Screenshot"
               className="max-w-full h-auto rounded-lg shadow-xl"
             />

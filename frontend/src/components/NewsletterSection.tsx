@@ -1,10 +1,13 @@
 'use client'
 
+import React from 'react'
+import Button from './ui/Button'
+
 type NewsletterSectionProps = {
   title: string
   description: string
   buttonText: string
-  buttonLink?: string
+  buttonLink: string
 }
 
 export default function NewsletterSection({ 
@@ -40,14 +43,14 @@ export default function NewsletterSection({
           {description}
         </p>
         {buttonLink && (
-          <a
+          <Button
             href={buttonLink}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
           >
             {buttonText}
-          </a>
+          </Button>
         )}
       </div>
     </section>

@@ -1,11 +1,13 @@
 'use client'
 
+import { urlFor } from '@/lib/sanity.client'
+
 type SeoSectionProps = {
   metaDescription?: string
   metaKeywords?: string
   ogTitle?: string
   ogDescription?: string
-  ogImage?: { asset: { url: string } }
+  ogImage?: any
 }
 
 export default function SeoSection({ 
@@ -41,11 +43,11 @@ export default function SeoSection({
             <p className="text-gray-600">{ogDescription}</p>
           </div>
         )}
-        {ogImage?.asset?.url && (
+        {ogImage && (
           <div>
             <span className="font-medium text-gray-700">OG Image:</span>
             <img 
-              src={ogImage.asset.url} 
+              src={urlFor(ogImage).url()} 
               alt="OG Image" 
               className="w-20 h-20 object-cover rounded mt-1"
             />

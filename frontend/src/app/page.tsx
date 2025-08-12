@@ -1,25 +1,34 @@
-import { sanityClient } from "@/lib/sanity.client";
-import { getPageQuery, renderSection } from "@/lib/pageUtils";
+import { sanityClient, sanityClientDraft } from "@/lib/sanity.client";
+import { getPageQuery, renderSectionsWithSideLineContext } from "@/lib/pageUtils";
 import { getSiteSettings } from "@/lib/siteSettings";
+import { draftMode } from 'next/headers'
+import BackgroundColorProvider from "@/components/BackgroundColorProvider";
+import FontColorProvider from "@/components/FontColorProvider";
+import { cleanColorValue } from '@/lib/colorUtils'
 
 export default async function HomePage() {
+  const { isEnabled: isDraftMode } = await draftMode()
+  
+  // Use the appropriate client based on draft mode
+  const client = isDraftMode ? sanityClientDraft : sanityClient
+  
   try {
     // Try to fetch the homepage and site settings
     const [page, settings] = await Promise.all([
-      sanityClient.fetch(getPageQuery()),
+      client.fetch(getPageQuery()),
       getSiteSettings()
     ]);
 
     // If no homepage document exists, show setup instructions
     if (!page) {
       return (
-        <main className="min-h-screen">
+        <main className="min-h-screen" style={{ backgroundColor: 'white' }}>
           <div className="max-w-4xl mx-auto py-12 px-4 text-center">
             <h1 className="text-4xl font-bold mb-6">Welcome to {settings?.siteTitle || 'Open Sauced'}</h1>
             <p className="text-xl text-gray-600 mb-8">
               Your homepage is not configured yet. Please set up your content in Sanity Studio.
             </p>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="border border-blue-200 rounded-lg p-4 mb-6">
               <p className="text-blue-800">
                 <strong>Setup Instructions:</strong>
               </p>
@@ -32,7 +41,7 @@ export default async function HomePage() {
                 <li>• Save and refresh this page</li>
               </ul>
             </div>
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="border border-yellow-200 rounded-lg p-4">
               <p className="text-yellow-800">
                 <strong>Debug:</strong> Visit <a href="/debug" className="underline">/debug</a> to see what's in your Sanity database.
               </p>
@@ -44,14 +53,15 @@ export default async function HomePage() {
 
     // If page exists but has no content, show a message
     if (!page.pageBuilder || page.pageBuilder.length === 0) {
+      const backgroundColor = page.pageSettings?.pageBackground || 'white';
       return (
-        <main className="min-h-screen">
+        <main className="min-h-screen" style={{ backgroundColor }}>
           <div className="max-w-4xl mx-auto py-12 px-4 text-center">
             <h1 className="text-4xl font-bold mb-6">{page.title || settings?.siteTitle || 'Homepage'}</h1>
             <p className="text-xl text-gray-600 mb-8">
               This page exists but has no content sections. Add sections using the Page Builder in Sanity Studio.
             </p>
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div className="border border-yellow-200 rounded-lg p-4 mb-6">
               <p className="text-yellow-800">
                 <strong>Next Steps:</strong>
               </p>
@@ -62,7 +72,7 @@ export default async function HomePage() {
                 <li>• Save and refresh this page</li>
               </ul>
             </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="border border-blue-200 rounded-lg p-4">
               <p className="text-blue-800">
                 <strong>Debug Info:</strong> Page found with title "{page.title}" but no sections. 
                 Visit <a href="/debug" className="underline">/debug</a> for more details.
@@ -73,31 +83,43 @@ export default async function HomePage() {
       );
     }
 
-    // Debug: Log the page data
-    console.log('Homepage data:', page);
-    console.log('Page builder sections:', page.pageBuilder);
-
+    // Get and clean color values from page settings
+    const backgroundColor = cleanColorValue(page.pageSettings?.pageBackground) || 'white';
+    const headingFontColor = cleanColorValue(page.pageSettings?.headingFontColor);
+    const titleFontColor = cleanColorValue(page.pageSettings?.titleFontColor);
+    const contentFontColor = cleanColorValue(page.pageSettings?.contentFontColor);
+    
     return (
-      <main>
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4 mx-4 mt-4">
-          <p className="text-green-800">
-            <strong>✅ Content Found:</strong> {page.pageBuilder.length} sections loaded from Sanity.
-            Visit <a href="/debug" className="underline">/debug</a> for detailed information.
-          </p>
-        </div>
-        {page.pageBuilder.map(renderSection)}
-      </main>
+      <>
+        <BackgroundColorProvider backgroundColor={backgroundColor} />
+        <FontColorProvider 
+          headingFontColor={headingFontColor}
+          titleFontColor={titleFontColor}
+          contentFontColor={contentFontColor}
+        />
+        <main style={{ backgroundColor, minHeight: '100vh' }}>
+          {isDraftMode && (
+            <div className="border border-orange-200 rounded-lg p-4 mb-4 mx-4 mt-4">
+              <p className="text-orange-800">
+                <strong>🔧 Draft Mode Active:</strong> You're viewing unpublished content. 
+                Changes you make in Sanity Studio will be visible here in real-time.
+              </p>
+            </div>
+          )}
+          {renderSectionsWithSideLineContext(page.pageBuilder)}
+        </main>
+      </>
     );
   } catch (error) {
     console.error('Error fetching homepage data:', error);
     return (
-      <main className="min-h-screen">
+      <main className="min-h-screen" style={{ backgroundColor: 'white' }}>
         <div className="max-w-4xl mx-auto py-12 px-4 text-center">
           <h1 className="text-4xl font-bold mb-6">Connection Error</h1>
           <p className="text-xl text-gray-600 mb-8">
             Unable to connect to Sanity CMS.
           </p>
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="border border-red-200 rounded-lg p-4 mb-6">
             <p className="text-red-800">
               <strong>Error:</strong> {error instanceof Error ? error.message : 'Unknown error'}
             </p>
@@ -110,7 +132,7 @@ export default async function HomePage() {
               </ul>
             </div>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="border border-blue-200 rounded-lg p-4">
             <p className="text-blue-800">
               <strong>Debug:</strong> Visit <a href="/debug" className="underline">/debug</a> to test your Sanity connection.
             </p>

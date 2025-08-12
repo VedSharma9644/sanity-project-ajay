@@ -1,5 +1,7 @@
 'use client'
 
+import { urlFor } from '@/lib/sanity.client'
+
 type Feature = {
   title: string
   description: string
@@ -7,9 +9,9 @@ type Feature = {
 
 type EasyAccessSectionProps = {
   title: string
-  icon: { asset: { url: string } }
+  icon: any
   features: Feature[]
-  bottomImage?: { asset: { url: string } }
+  bottomImage?: any
 }
 
 export default function EasyAccessSection({ 
@@ -36,14 +38,14 @@ export default function EasyAccessSection({
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with Icon and Title */}
         <div className="text-center mb-16">
           {icon && (
             <div className="flex justify-center mb-6">
               <img
-                src={icon.asset.url}
+                src={urlFor(icon).url()}
                 alt="Easy Access Icon"
                 className="h-16 w-16 object-contain"
               />
@@ -58,7 +60,7 @@ export default function EasyAccessSection({
         {features && features.length > 0 && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                              <div key={index} className="rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">
                   {feature.title}
                 </h3>
@@ -74,7 +76,7 @@ export default function EasyAccessSection({
         {bottomImage && (
           <div className="flex justify-center">
             <img
-              src={bottomImage.asset.url}
+              src={urlFor(bottomImage).url()}
               alt="Easy Access Screenshot"
               className="max-w-full h-auto rounded-lg shadow-lg"
             />
