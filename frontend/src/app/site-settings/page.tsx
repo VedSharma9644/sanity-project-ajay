@@ -1,7 +1,7 @@
-import { getSiteSettingsNew, generateGradientClass } from "@/lib/siteSettingsNew";
+import { getSiteSettings, generateGradientClass } from "@/lib/siteSettings";
 
 export default async function SiteSettingsPage() {
-  const settings = await getSiteSettingsNew();
+  const settings = await getSiteSettings();
 
   return (
     <main className="min-h-screen p-8">

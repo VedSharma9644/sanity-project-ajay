@@ -63,6 +63,24 @@ const post = defineType({
       description: 'Author of the blog post',
     },
     {
+      name: 'readTime',
+      title: 'Read Time',
+      type: 'string',
+      description: 'Estimated time to read the post (e.g., "2 mins read", "5 mins read")',
+      options: {
+        list: [
+          { title: '1 min read', value: '1 min read' },
+          { title: '2 mins read', value: '2 mins read' },
+          { title: '3 mins read', value: '3 mins read' },
+          { title: '5 mins read', value: '5 mins read' },
+          { title: '7 mins read', value: '7 mins read' },
+          { title: '10 mins read', value: '10 mins read' },
+          { title: '15 mins read', value: '15 mins read' },
+        ]
+      },
+      initialValue: '2 mins read',
+    },
+    {
       name: 'content',
       title: 'Content',
       type: 'blockContent',

@@ -1,22 +1,29 @@
 'use client'
 
 import { useEffect } from 'react'
-import { applyColorToBody } from '@/lib/colorUtils'
 
-type BackgroundColorProviderProps = {
-  backgroundColor: string
+interface BackgroundColorProviderProps {
+  children: React.ReactNode
+  backgroundColor?: string
+  siteBackgroundColor?: string
 }
 
-export default function BackgroundColorProvider({ backgroundColor }: BackgroundColorProviderProps) {
+export default function BackgroundColorProvider({ 
+  children, 
+  backgroundColor,
+  siteBackgroundColor 
+}: BackgroundColorProviderProps) {
   useEffect(() => {
-    // Apply background color to body using utility function
-    applyColorToBody('backgroundColor', backgroundColor)
-    
-    // Cleanup function to reset background when component unmounts
-    return () => {
-      document.body.style.backgroundColor = ''
+    // Set the background color CSS variable
+    if (backgroundColor) {
+      document.documentElement.style.setProperty('--background-color', backgroundColor)
     }
-  }, [backgroundColor])
+    
+    // Set the site background color CSS variable
+    if (siteBackgroundColor) {
+      document.documentElement.style.setProperty('--site-background-color', siteBackgroundColor)
+    }
+  }, [backgroundColor, siteBackgroundColor])
 
-  return null
+  return <>{children}</>
 }

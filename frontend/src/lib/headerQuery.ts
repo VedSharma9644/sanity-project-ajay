@@ -12,7 +12,8 @@ export const getHeaderQuery = groq`
       logoSize,
       menuFontSize,
       menuFontColor,
-      menuFontWeight
+      menuFontWeight,
+      backgroundColor
     },
     ctaButton {
       name,

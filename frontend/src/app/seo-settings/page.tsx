@@ -1,7 +1,7 @@
-import { getSiteSettings } from "@/lib/siteSettings";
+import { getSeoSettings } from "@/lib/seoSettings";
 
 export default async function SEOSettingsPage() {
-  const settings = await getSiteSettings();
+  const settings = await getSeoSettings();
 
   return (
     <main className="min-h-screen p-8">

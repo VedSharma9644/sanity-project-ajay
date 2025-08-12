@@ -110,7 +110,12 @@ export default function SiteHeader({
   }
 
   return (
-    <header className={`border-b  sticky top-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+    <header 
+      className={`border-b sticky top-0 z-50 transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
+      style={{
+        backgroundColor: cleanColorValue(headerSettings?.backgroundColor) || 'var(--header-background-color, #ffffff)'
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}

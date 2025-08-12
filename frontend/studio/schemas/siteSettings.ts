@@ -1,7 +1,7 @@
 import { defineField, defineType } from 'sanity'
 
 export default defineType({
-  name: 'siteSettingsNew',
+  name: 'siteSettings',
   title: 'Site Settings',
   type: 'document',
   fields: [
@@ -200,6 +200,14 @@ export default defineType({
             ],
           },
           initialValue: 'light',
+        }),
+        defineField({
+          name: 'siteBackgroundColor',
+          title: 'Site Background Color',
+          type: 'string',
+          description: 'Background color for the entire site (hex code)',
+          validation: (Rule) => Rule.regex(/^#[0-9A-F]{6}$/i).error('Please enter a valid hex color code'),
+          initialValue: '#ffffff',
         }),
       ],
     }),

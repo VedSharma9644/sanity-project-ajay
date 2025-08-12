@@ -88,6 +88,22 @@ const siteBlog = defineType({
       ]
     },
     {
+      name: 'posts',
+      title: 'Blog Posts',
+      type: 'array',
+      description: 'Select which blog posts to display in this section',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'post' }],
+          options: {
+            disableNew: true
+          }
+        }
+      ],
+      validation: (Rule: any) => Rule.optional(),
+    },
+    {
       name: 'blogPostCardSettings',
       title: 'Blog Post Card Settings',
       type: 'object',
@@ -143,19 +159,14 @@ const siteBlog = defineType({
       ]
     },
     {
-      name: 'posts',
-      title: 'Blog Posts',
-      type: 'array',
-      description: 'Select which blog posts to display in this section',
-      of: [
-        {
-          type: 'reference',
-          to: [{ type: 'post' }],
-          options: {
-            disableNew: true
-          }
-        }
-      ],
+      name: 'featuredPost',
+      title: 'Featured Blog Post',
+      type: 'reference',
+      description: 'Select the blog post to display as the featured post at the top of the blog page',
+      to: [{ type: 'post' }],
+      options: {
+        disableNew: true
+      },
       validation: (Rule: any) => Rule.optional(),
     },
   ],

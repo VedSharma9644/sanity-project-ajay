@@ -9,6 +9,7 @@ export interface HeaderSettings {
   menuFontSize?: number;
   menuFontColor?: string;
   menuFontWeight?: string;
+  backgroundColor?: string;
 }
 
 /**
@@ -45,6 +46,14 @@ export function validateHeaderSettings(settings: HeaderSettings | undefined): He
     validated.menuFontWeight = settings.menuFontWeight;
   }
 
+  // Validate background color
+  if (settings.backgroundColor) {
+    const cleanColor = cleanColorValue(settings.backgroundColor);
+    if (cleanColor) {
+      validated.backgroundColor = cleanColor;
+    }
+  }
+
   // Only return validated settings if we have at least one valid setting
   return Object.keys(validated).length > 0 ? validated : null;
 }
@@ -68,6 +77,9 @@ export function applyHeaderSettings(settings: HeaderSettings | null): void {
     if (settings.menuFontWeight) {
       document.documentElement.style.setProperty('--header-menu-font-weight', settings.menuFontWeight);
     }
+    if (settings.backgroundColor) {
+      document.documentElement.style.setProperty('--header-background-color', settings.backgroundColor);
+    }
   } catch (error) {
     console.error('Error applying header settings:', error);
   }
@@ -82,6 +94,7 @@ export function removeHeaderSettings(): void {
     document.documentElement.style.removeProperty('--header-menu-font-size');
     document.documentElement.style.removeProperty('--header-menu-font-color');
     document.documentElement.style.removeProperty('--header-menu-font-weight');
+    document.documentElement.style.removeProperty('--header-background-color');
   } catch (error) {
     console.error('Error removing header settings:', error);
   }

@@ -6,10 +6,10 @@ export const myStructure = (S: StructureBuilder) =>
     .items([
       S.listItem()
         .title('SEO Settings')
-        .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
+        .child(S.document().schemaType('seoSettings').documentId('seoSettings')),
       S.listItem()
         .title('Site Settings')
-        .child(S.document().schemaType('siteSettingsNew').documentId('siteSettingsNew')),
+        .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
       S.listItem()
         .title('Site Header')
         .child(S.document().schemaType('siteHeader').documentId('siteHeader')),
@@ -54,6 +54,6 @@ export const myStructure = (S: StructureBuilder) =>
       //   .title('Newsletter Sections')
       //   .child(S.documentTypeList('newsletterSection')),
       ...S.documentTypeListItems().filter(
-        (item) => !['siteSettings', 'siteSettingsNew', 'siteHeader', 'siteFooter', 'siteBlog', 'page', 'post', 'heroSectionHigh', 'heroSectionMedium', 'brands'].includes(item.getId() || '')
+        (item) => !['seoSettings', 'siteSettings', 'siteHeader', 'siteFooter', 'siteBlog', 'page', 'post', 'heroSectionHigh', 'heroSectionMedium', 'brands'].includes(item.getId() || '')
       )
     ])

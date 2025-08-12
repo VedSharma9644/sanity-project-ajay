@@ -1,6 +1,6 @@
 import { sanityClient, sanityClientDraft } from "@/lib/sanity.client";
 import { getPageQuery, renderSectionsWithSideLineContext } from "@/lib/pageUtils";
-import { getSiteSettings } from "@/lib/siteSettings";
+import { getSeoSettings } from "@/lib/seoSettings";
 import { draftMode } from 'next/headers'
 import BackgroundColorProvider from "@/components/BackgroundColorProvider";
 import FontColorProvider from "@/components/FontColorProvider";
@@ -13,10 +13,10 @@ export default async function HomePage() {
   const client = isDraftMode ? sanityClientDraft : sanityClient
   
   try {
-    // Try to fetch the homepage and site settings
+    // Try to fetch the homepage and SEO settings
     const [page, settings] = await Promise.all([
       client.fetch(getPageQuery()),
-      getSiteSettings()
+      getSeoSettings()
     ]);
 
     // If no homepage document exists, show setup instructions
@@ -91,23 +91,24 @@ export default async function HomePage() {
     
     return (
       <>
-        <BackgroundColorProvider backgroundColor={backgroundColor} />
-        <FontColorProvider 
-          headingFontColor={headingFontColor}
-          titleFontColor={titleFontColor}
-          contentFontColor={contentFontColor}
-        />
-        <main style={{ backgroundColor, minHeight: '100vh' }}>
-          {isDraftMode && (
-            <div className="border border-orange-200 rounded-lg p-4 mb-4 mx-4 mt-4">
-              <p className="text-orange-800">
-                <strong>🔧 Draft Mode Active:</strong> You're viewing unpublished content. 
-                Changes you make in Sanity Studio will be visible here in real-time.
-              </p>
-            </div>
-          )}
-          {renderSectionsWithSideLineContext(page.pageBuilder)}
-        </main>
+        <BackgroundColorProvider backgroundColor={backgroundColor}>
+          <FontColorProvider 
+            headingFontColor={headingFontColor}
+            titleFontColor={titleFontColor}
+            contentFontColor={contentFontColor}
+          />
+          <main style={{ backgroundColor, minHeight: '100vh' }}>
+            {isDraftMode && (
+              <div className="border border-orange-200 rounded-lg p-4 mb-4 mx-4 mt-4">
+                <p className="text-orange-800">
+                  <strong>🔧 Draft Mode Active:</strong> You're viewing unpublished content. 
+                  Changes you make in Sanity Studio will be visible here in real-time.
+                </p>
+              </div>
+            )}
+            {renderSectionsWithSideLineContext(page.pageBuilder)}
+          </main>
+        </BackgroundColorProvider>
       </>
     );
   } catch (error) {

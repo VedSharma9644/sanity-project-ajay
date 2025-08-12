@@ -105,6 +105,13 @@ const siteHeader = defineType({
           },
           initialValue: 'normal',
         },
+        {
+          name: 'backgroundColor',
+          title: 'Header Background Color',
+          type: 'string',
+          description: 'Background color for the header (hex: #ffffff, rgba: rgba(255,255,255,1), rgb: rgb(255,255,255), or named color: white)',
+          placeholder: '#ffffff or rgba(255,255,255,1) or white',
+        },
       ],
     },
 

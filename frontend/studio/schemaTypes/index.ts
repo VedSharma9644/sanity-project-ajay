@@ -19,8 +19,8 @@ import brands from '../schemas/brands'
 // import workspaceSection from '../schemas/workspaceSection'
 // import headingDescription from '../schemas/headingDescription'
 // import newsletterSection from '../schemas/newsletterSection'
-import siteSettings from '../schemas/seoSettings'
-import siteSettingsNew from '../schemas/siteSettingsNew'
+import siteSettings from '../schemas/siteSettings'
+import seoSettings from '../schemas/seoSettings'
 
 export const schemaTypes = [
   page,
@@ -45,5 +45,5 @@ export const schemaTypes = [
   // headingDescription,
   // newsletterSection,
   siteSettings,
-  siteSettingsNew
+  seoSettings
 ]
